@@ -115,7 +115,7 @@ class LectureInstance:
         who are enrolled in the section
         as of the earliest of today
         or the last day to drop S courses"""
-        return self.get_enroll_after(datetime(2022, 4, 6))
+        return self.get_enroll_after(datetime(2023, 4, 6))
 
 
 def mash_lecture_instances(lecs: dict[str, LectureInstance]) -> dict[str, LectureInstance]:
@@ -247,16 +247,18 @@ class MultiDatePlotSystem(DatePlotSystem):
         fys = extract_course_code_2(self.course_code)[-1]
         if fys == "F":
             f_enrol = sum(x.get_fy_final_enrolls() for x in cur_data.values())
-            drops = f_enrol - sum(x.get_f_final_drop() for x in cur_data.values())
-            lwds = f_enrol - drops - sum(x.get_f_final_lwd() for x in cur_data.values())
+            enrol_drops = sum(x.get_f_final_drop() for x in cur_data.values())
+            enrol_lwds = sum(x.get_f_final_lwd() for x in cur_data.values())
         elif fys == "Y":
             f_enrol = sum(x.get_fy_final_enrolls() for x in cur_data.values())
-            drops = f_enrol - sum(x.get_y_final_drop() for x in cur_data.values())
-            lwds = f_enrol - drops - sum(x.get_sy_final_lwd() for x in cur_data.values())
+            enrol_drops = sum(x.get_y_final_drop() for x in cur_data.values())
+            enrol_lwds = sum(x.get_sy_final_lwd() for x in cur_data.values())
         else:
             f_enrol = sum(x.get_s_final_enrolls() for x in cur_data.values())
-            drops = f_enrol - sum(x.get_s_final_drop() for x in cur_data.values())
-            lwds = f_enrol - drops - sum(x.get_sy_final_lwd() for x in cur_data.values())
+            enrol_drops = sum(x.get_s_final_drop() for x in cur_data.values())
+            enrol_lwds = sum(x.get_sy_final_lwd() for x in cur_data.values())
+        drops = f_enrol - enrol_drops
+        lwds = enrol_drops - enrol_lwds
 
         totcap = sum(x.cap for x in cur_data.values())
         totenrol = sum(x.enroll_logs[-1] for x in cur_data.values())
