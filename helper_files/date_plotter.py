@@ -248,15 +248,15 @@ class MultiDatePlotSystem(DatePlotSystem):
         if fys == "F":
             f_enrol = sum(x.get_fy_final_enrolls() for x in cur_data.values())
             drops = f_enrol - sum(x.get_f_final_drop() for x in cur_data.values())
-            lwds = drops - sum(x.get_f_final_lwd() for x in cur_data.values())
+            lwds = f_enrol - drops - sum(x.get_f_final_lwd() for x in cur_data.values())
         elif fys == "Y":
             f_enrol = sum(x.get_fy_final_enrolls() for x in cur_data.values())
             drops = f_enrol - sum(x.get_y_final_drop() for x in cur_data.values())
-            lwds = drops - sum(x.get_sy_final_lwd() for x in cur_data.values())
+            lwds = f_enrol - drops - sum(x.get_sy_final_lwd() for x in cur_data.values())
         else:
             f_enrol = sum(x.get_s_final_enrolls() for x in cur_data.values())
             drops = f_enrol - sum(x.get_s_final_drop() for x in cur_data.values())
-            lwds = drops - sum(x.get_sy_final_lwd() for x in cur_data.values())
+            lwds = f_enrol - drops - sum(x.get_sy_final_lwd() for x in cur_data.values())
 
         totcap = sum(x.cap for x in cur_data.values())
         totenrol = sum(x.enroll_logs[-1] for x in cur_data.values())
