@@ -47,7 +47,7 @@ class TkWindowSystem:
 
         self.check_state_2 = tk.IntVar()
         check_2 = tk.Checkbutton(self.root,
-                                 text="Hide special lec sessions (LEC2000-2999)",
+                                 text="Hide special lec sections (LEC2000-2999)",
                                  variable=self.check_state_2)
         check_2.pack()
 
